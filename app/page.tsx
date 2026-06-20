@@ -2,6 +2,9 @@
 
 import { useEffect, useRef, useState, createContext, useContext } from "react";
 
+
+
+
 const NAV_LINKS = [
   "beranda",
   "tentang",
@@ -670,6 +673,174 @@ const TECH_STACK = [
   { label: "Tailwind CSS", Logo: TailwindLogo },
   { label: "Figma", Logo: FigmaLogo },
 ] as const;
+
+function LoadingScreen({ onDone }: { onDone: () => void }) {
+  const [progress, setProgress] = useState(0);
+  const [phase, setPhase] = useState<"loading" | "done">("loading");
+
+  useEffect(() => {
+    // 1. Baca sinyal koneksi user (kalau browser support)
+    const conn =
+      (navigator as any).connection ||
+      (navigator as any).mozConnection ||
+      (navigator as any).webkitConnection;
+    const effectiveType: string = conn?.effectiveType || "4g";
+    const downlink: number = conn?.downlink ?? 10; // Mbps estimasi
+
+    // Tentukan "pacing" dasar berdasar kecepatan koneksi
+    // Makin lambat koneksi, makin kecil increment per tick -> progress lebih pelan & realistis
+    const speedFactor =
+      effectiveType === "slow-2g" ? 0.15 :
+      effectiveType === "2g" ? 0.3 :
+      effectiveType === "3g" ? 0.6 :
+      Math.min(1, downlink / 8); // 4g/5g, dinormalisasi dari downlink
+
+    // 2. Kumpulkan semua aset gambar nyata yang dipakai di halaman
+    const assetUrls = [
+      "images/sertif1.jpeg",
+      "images/sertif2.jpeg",
+      "images/sertif3.jpeg",
+      "images/project1.png",
+      "images/project2.png",
+    ];
+
+    let loadedCount = 0;
+    const total = assetUrls.length;
+    let realProgress = 0; // 0..100 dari aset yang benar2 selesai dimuat
+
+    const updateRealProgress = () => {
+      realProgress = (loadedCount / total) * 100;
+    };
+
+    assetUrls.forEach((src) => {
+      const img = new Image();
+      img.onload = img.onerror = () => {
+        loadedCount += 1;
+        updateRealProgress();
+      };
+      img.src = src;
+    });
+
+    // 3. Animate progress bar: mengejar realProgress, tapi laju kenaikannya
+    // dibatasi speedFactor supaya terasa proporsional dgn sinyal koneksi.
+    let display = 0;
+    let raf: number;
+    const tick = () => {
+      const target = realProgress;
+      const gap = target - display;
+      // step lebih kecil kalau speedFactor rendah (koneksi lambat)
+      const step = Math.max(0.15, gap * 0.06 * speedFactor + 0.05 * speedFactor);
+      display = Math.min(target + 0.001, display + step);
+      // Tetap merayap pelan2 walau target belum nambah (biar gak macet keliatan freeze)
+      if (display < 99 && gap < 0.5) {
+        display = Math.min(99, display + 0.02 * speedFactor);
+      }
+      setProgress(display);
+
+      if (loadedCount >= total && display >= 99.3) {
+        setProgress(100);
+        setPhase("done");
+        setTimeout(onDone, 650); // beri waktu fade-out
+        return;
+      }
+      raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+
+    return () => cancelAnimationFrame(raf);
+  }, [onDone]);
+
+  const letters = "PORTOFOLIO".split("");
+
+  return (
+    <div
+      style={{
+        position: "fixed",
+        inset: 0,
+        zIndex: 999999,
+        background:
+          "radial-gradient(circle at 50% 40%, #1a3aff 0%, #0b1aa8 55%, #050a4d 100%)",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        opacity: phase === "done" ? 0 : 1,
+        transition: "opacity .6s ease",
+        pointerEvents: phase === "done" ? "none" : "auto",
+      }}
+    >
+      <div
+        style={{
+          display: "flex",
+          flexWrap: "wrap",
+          justifyContent: "center",
+          gap: "0.05em",
+          marginBottom: "28px",
+        }}
+      >
+        {letters.map((ch, i) => (
+          <span
+            key={i}
+            className="font-display"
+            style={{
+              fontSize: "clamp(28px,7vw,72px)",
+              color: "#ffffff",
+              opacity: progress > (i / letters.length) * 100 ? 1 : 0.15,
+              textShadow: "0 0 18px rgba(255,255,255,0.55)",
+              transition: "opacity .25s ease",
+            }}
+          >
+            {ch}
+          </span>
+        ))}
+      </div>
+
+      <div
+        style={{
+          fontFamily: "'Inter',sans-serif",
+          fontSize: "12px",
+          fontWeight: 700,
+          letterSpacing: "0.25em",
+          textTransform: "uppercase",
+          color: "#ffffff",
+          marginBottom: "18px",
+        }}
+      >
+        Please wait
+      </div>
+
+      <div
+        style={{
+          width: "min(280px, 70vw)",
+          height: "3px",
+          background: "rgba(255,255,255,0.25)",
+          overflow: "hidden",
+        }}
+      >
+        <div
+          style={{
+            width: `${progress}%`,
+            height: "100%",
+            background: "#ffffff",
+            boxShadow: "0 0 12px 2px rgba(255,255,255,0.85)",
+            transition: "width .1s linear",
+          }}
+        />
+      </div>
+      <div
+        style={{
+          fontFamily: "'Inter',sans-serif",
+          fontSize: "11px",
+          color: "rgba(255,255,255,0.7)",
+          marginTop: "10px",
+          letterSpacing: "0.05em",
+        }}
+      >
+        {Math.floor(progress)}%
+      </div>
+    </div>
+  );
+}
 
 function PageContent() {
   const { lang } = useLanguage();
@@ -2239,11 +2410,14 @@ function PageContent() {
 }
 
 export default function Home() {
+  const [ready, setReady] = useState(false);
+
   return (
     <ThemeProvider>
       <LanguageProvider>
         <ThemeStyles />
-        <PageContent />
+        {!ready && <LoadingScreen onDone={() => setReady(true)} />}
+        {ready && <PageContent />}
       </LanguageProvider>
     </ThemeProvider>
   );
