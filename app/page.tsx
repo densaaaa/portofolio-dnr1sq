@@ -1710,7 +1710,7 @@ function PageContent() {
                             opacity: 0.35,
                           }}
                         >
-                          {p.category.id === "Web3"
+                          {p.category.id
                             ? "currency_bitcoin"
                             : "security"}
                         </span>
