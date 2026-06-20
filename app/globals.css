@@ -1,26 +1,140 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@plugin "@tailwindcss/forms";
+@plugin "@tailwindcss/container-queries";
+
+@theme {
+  --color-background:               #fbf9f9;
+  --color-surface:                  #fbf9f9;
+  --color-surface-container:        #efeded;
+  --color-surface-container-low:    #f5f3f3;
+  --color-surface-container-high:   #e9e8e7;
+  --color-surface-variant:          #e3e2e2;
+  --color-surface-dim:              #dbdad9;
+
+  --color-primary:                  #000000;
+  --color-primary-container:        #1c1b1b;
+  --color-on-primary:               #ffffff;
+  --color-on-primary-container:     #858383;
+
+  --color-secondary:                #496360;
+  --color-secondary-container:      #c9e6e1;
+  --color-on-secondary:             #ffffff;
+  --color-on-secondary-container:   #4d6864;
+
+  --color-on-background:            #1b1c1c;
+  --color-on-surface:               #1b1c1c;
+  --color-on-surface-variant:       #444748;
+
+  --color-outline:                  #747878;
+  --color-outline-variant:          #c4c7c7;
+
+  --color-error:                    #ba1a1a;
+  --color-on-error:                 #ffffff;
+
+  --color-accent-coral:             #e57373;
+
+  --font-display:        "Poppins", sans-serif;
+  --font-body-md:        "Poppins", sans-serif;
+  --font-body-lg:        "Poppins", sans-serif;
+  --font-label-caps:     "Poppins", sans-serif;
+  --font-button:         "Poppins", sans-serif;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* === Base === */
+* { box-sizing: border-box; }
+
+body {
+  background-color: #fbf9f9;
+  color: #1b1c1c;
+  font-family: "Poppins", sans-serif;
+  overflow-x: hidden;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* === Typography helpers === */
+.font-display    { font-family: "Poppins", sans-serif; }
+.font-body-md    { font-family: "Poppins", sans-serif; }
+.font-body-lg    { font-family: "Poppins", sans-serif; }
+.font-label-caps { font-family: "Poppins", sans-serif; letter-spacing: 0.1em; }
+.font-button     { font-family: "Poppins", sans-serif; letter-spacing: 0.05em; font-weight: 600; }
+
+.text-display {
+  font-size: clamp(36px, 6vw, 80px);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  font-weight: 700;
+}
+
+/* === Material Icons === */
+.material-symbols-outlined {
+  font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+  vertical-align: middle;
+}
+
+/* === Tech stack hover (pure CSS, no JS dependency) === */
+.tech-item {
+  opacity: 0.55;
+  transition: opacity 0.3s ease;
+}
+.tech-item:hover {
+  opacity: 1;
+}
+.tech-item:hover .tech-icon-box {
+  background: rgba(229, 115, 115, 0.15) !important;
+}
+.tech-item:hover .tech-icon {
+  color: #e57373 !important;
+}
+.reveal {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.7s ease-out, transform 0.7s ease-out;
+}
+.reveal.pre-animate {
+  opacity: 0;
+  transform: translateY(24px);
+}
+.reveal.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* === Progress bar === */
+.progress-bar-fill {
+  transition: width 1.5s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+/* === Glass card === */
+.glass-card {
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.08);
+}
+
+/* === Section spacing === */
+.section-gap {
+  padding-top: 100px;
+  padding-bottom: 100px;
+}
+@media (min-width: 768px) {
+  .section-gap {
+    padding-top: 160px;
+    padding-bottom: 160px;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* === Container === */
+.container-main {
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 24px;
+  padding-right: 24px;
+}
+@media (min-width: 768px) {
+  .container-main {
+    padding-left: 40px;
+    padding-right: 40px;
+  }
 }
