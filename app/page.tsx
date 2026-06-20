@@ -448,34 +448,59 @@ function ThemeToggleButton() {
       aria-label={isDark ? "Aktifkan tema terang" : "Aktifkan tema gelap"}
       style={{
         position: "fixed",
-        top: "50%",
+        top: "90%",
         right: "20px",
         transform: "translateY(-50%)",
         zIndex: 100001,
-        width: "44px",
-        height: "44px",
-        borderRadius: "0",
-        background: isDark ? "#1E1E1E" : "#111111",
-        border: `1px solid ${isDark ? "rgba(255,255,255,0.12)" : "rgba(0,0,0,0.1)"}`,
-        boxShadow: "0 4px 20px rgba(0,0,0,0.25)",
-        color: RED,
+        width: "64px",
+        height: "32px",
+        borderRadius: "999px",
+        padding: "3px",
+        background: isDark ? "#0d0d0d" : "#cfcfc8",
+        border: `1px solid ${isDark ? "rgba(255,255,255,0.15)" : "rgba(17,17,17,0.18)"}`,
+        boxShadow: isDark
+          ? "inset 0 1px 3px rgba(0,0,0,0.6)"
+          : "inset 0 1px 3px rgba(0,0,0,0.15)",
+        cursor: "pointer",
         display: "flex",
         alignItems: "center",
-        justifyContent: "center",
-        cursor: "pointer",
-        transition: "transform .2s",
+        justifyContent: isDark ? "flex-end" : "flex-start",
+        transition: "background .35s ease, justify-content .35s ease",
       }}
       onMouseEnter={(e) =>
         ((e.currentTarget as HTMLButtonElement).style.transform =
-          "translateY(-50%) scale(1.08)")
+          "translateY(-50%) scale(1.05)")
       }
       onMouseLeave={(e) =>
         ((e.currentTarget as HTMLButtonElement).style.transform =
           "translateY(-50%)")
       }
     >
-      <span className="material-symbols-outlined" style={{ fontSize: "20px" }}>
-        {isDark ? "light_mode" : "dark_mode"}
+      <span
+        style={{
+          width: "24px",
+          height: "24px",
+          borderRadius: "50%",
+          background: isDark ? "#ffffff" : "#111111",
+          boxShadow: isDark
+            ? "0 0 8px 2px rgba(255,255,255,0.55), 0 1px 3px rgba(0,0,0,0.4)"
+            : "0 1px 3px rgba(0,0,0,0.4)",
+          transition:
+            "transform .35s cubic-bezier(.4,0,.2,1), background .35s ease",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <span
+          className="material-symbols-outlined"
+          style={{
+            fontSize: "14px",
+            color: isDark ? "#111111" : "#e8e8e4",
+          }}
+        >
+          {isDark ? "light_mode" : "dark_mode"}
+        </span>
       </span>
     </button>
   );
