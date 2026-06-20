@@ -1004,7 +1004,7 @@ function PageContent() {
               "@dnr1sq",
               "dnr1sq.dev",
               "Trenggalek, Jawa Timur",
-              "denisrisqi8@email.com",
+              "denisrisqi8@gmail.com",
             ].map((item) => (
               <span
                 key={item}
