@@ -190,7 +190,7 @@ const TRANSLATIONS = {
     saya: "Saya.",
     aboutP1: "Perkenalkan saya ",
     aboutP1b:
-      " adalah mahasiswa Teknik Informatika di POLITEKNIK NEGRI MALANG yang bersemangat membangun sistem yang tidak hanya berfungsi — tapi scalable.",
+      " adalah mahasiswa Teknik Informatika di POLITEKNIK NEGERI MALANG yang bersemangat membangun sistem yang tidak hanya berfungsi — tapi scalable.",
     aboutP2:
       "Ketika tidak sedang coding, saya suka mendalami desain sistem dan berkontribusi ke proyek open-source.",
     prestasi: "Prestasi",
