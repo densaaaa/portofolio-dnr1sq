@@ -1118,7 +1118,7 @@ function PageContent() {
                 gap: "8px",
               }}
             >
-              20 Jun, 2026{" "}
+              28 Jun, 2026{" "}
               <span style={{ color: RED, fontSize: "18px", lineHeight: 1 }}>
                 →
               </span>
