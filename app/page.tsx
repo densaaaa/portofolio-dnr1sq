@@ -20,17 +20,6 @@
             <p className="mt-5 max-w-2xl text-base leading-8 text-slate-300 sm:text-lg">
               Website portfolio ini sedang dalam proses redesain agar tampil lebih modern, clean, dan lebih representatif. Mohon bersabar, kami akan segera mengunggah versi terbaru.
             </p>
-
-            <div className="mt-8 flex flex-wrap gap-3">
-              <div className="rounded-2xl border border-white/10 bg-slate-900/60 px-4 py-3 text-sm text-slate-200">
-                <span className="block text-xs uppercase tracking-[0.3em] text-slate-500">Target</span>
-                <span className="mt-1 block font-semibold">Fresh look & better UX</span>
-              </div>
-              <div className="rounded-2xl border border-white/10 bg-slate-900/60 px-4 py-3 text-sm text-slate-200">
-                <span className="block text-xs uppercase tracking-[0.3em] text-slate-500">Status</span>
-                <span className="mt-1 block font-semibold">Coming soon</span>
-              </div>
-            </div>
           </div>
 
           <div className="rounded-[28px] border border-white/10 bg-slate-950/60 p-6 shadow-2xl">
@@ -39,7 +28,7 @@
                 <p className="text-sm font-semibold uppercase tracking-[0.3em] text-slate-400">
                   Progress
                 </p>
-                <p className="mt-2 text-3xl font-bold text-white">85%</p>
+                <p className="mt-2 text-3xl font-bold text-white">25%</p>
               </div>
               <div className="rounded-full border border-cyan-400/30 bg-cyan-400/10 px-3 py-1 text-sm font-medium text-cyan-300">
                 In Development
